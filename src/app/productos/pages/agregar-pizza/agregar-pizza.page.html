@@ -1,0 +1,102 @@
+<ion-content [fullscreen]="true">
+  <ion-card class="box-btn">
+    <ion-button fill="clear" (click)="setRouter('/pages/perfil')">
+      Ir atras
+    </ion-button>
+  </ion-card>
+  <ion-title size="large">Agregar pizza</ion-title>
+
+  <ion-card class="box-form">
+    <form [formGroup]="form" (ngSubmit)="guardarPizza()">
+      <ion-input
+        formControlName="nombre"
+        label="Nombre"
+        label-placement="floating"
+        fill="solid"
+        placeholder="Ingrese el nombre"
+        [counter]="true"
+        maxlength="50"
+      ></ion-input>
+      <br />
+      <ion-input
+        formControlName="descripcion"
+        label="Descripción"
+        label-placement="floating"
+        fill="solid"
+        placeholder="Ingrese la descripción"
+        [counter]="true"
+        maxlength="150"
+      ></ion-input>
+      <br />
+      <div class="form-box-title">
+        <ion-title size="large">Precio por tamaño</ion-title>
+      </div>
+      <div formGroupName="tamanosPrecios">
+        <ion-input
+          formControlName="pequena"
+          label="pequeña (S/) : "
+          type="number"
+        ></ion-input>
+        <ion-input
+          formControlName="mediana"
+          label="mediana (S/) : "
+          type="number"
+        ></ion-input>
+        <ion-input
+          formControlName="grande"
+          label="grande (S/) : "
+          type="number"
+        ></ion-input>
+      </div>
+      <br />
+
+      <ion-button color="tertiary" (click)="openModal2()"
+        >Agregar foto</ion-button
+      >
+      @if (fotoPizza) {
+      <ion-card>
+        <img [src]="fotoPizza" alt="foto de la pizza" />
+      </ion-card>
+      }
+
+      <!-- [initialBreakpoint]="0.50" [breakpoints]="[0, 0.25, 0.5, 0.75]" -->
+      @if (openModal) {
+      <ion-modal [isOpen]="openModal">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>Seleccionar imagen</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="closeModal()">
+                  <ion-icon name="close"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+            <ion-button
+              expand="block"
+              (click)="takePicture(CameraSource.Camera)"
+            >
+              <ion-icon name="camera" slot="start"></ion-icon>
+              Tomar foto
+            </ion-button>
+            <ion-button
+              expand="block"
+              (click)="takePicture(CameraSource.Photos)"
+            >
+              <ion-icon name="image" slot="start"></ion-icon>
+              Seleccionar de galería
+            </ion-button>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+      }
+      <br />
+      <br />
+      <ion-button color="secondary" type="submit">
+        {{guardando ? "Guardando..." : "Guardar" }}
+      </ion-button>
+    </form>
+  </ion-card>
+</ion-content>

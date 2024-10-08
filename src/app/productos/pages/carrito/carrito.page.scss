@@ -1,0 +1,42 @@
+.card-title-box {
+  text-align: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  color: yellow;
+}
+
+ion-spinner {
+  width: 100px;
+  height: 100px;
+}
+
+.box-pago-final {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+}
+
+.box-spinner {
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+}
+
+.items-card {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+}
+
+.items-card img {
+  max-width: 100px;
+  border-radius: 5px;
+}
+
+.items-card .items-detalles-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}

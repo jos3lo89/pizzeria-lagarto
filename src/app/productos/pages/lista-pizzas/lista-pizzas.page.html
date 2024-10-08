@@ -1,0 +1,45 @@
+<ion-content [fullscreen]="true">
+  <ion-card class="title-box">
+    <ion-title size="large" color="secondary">Lista pizzas</ion-title>
+  </ion-card>
+
+  <!-- <ion-grid>
+    <ion-row> -->
+  <div class="grid-container">
+    @for (pizza of productos; track $index) {
+    <!-- <ion-col size="6"> -->
+    <ion-card>
+      <!-- <div class="box-detalle"> -->
+      <div>
+        <img [src]="pizza.foto" />
+      </div>
+      <div>
+        <h4>{{pizza.nombre}}</h4>
+      </div>
+      <div>
+        <ion-button color="secondary" (click)="setRouter(pizza.id)"
+          >Detalles</ion-button
+        >
+        <!-- <ion-button color="danger" fill="outline">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="33"
+            height="33"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="none"
+              stroke="#e11d48"
+              d="M5.5 21a2 2 0 1 0 4 0m3 0a2 2 0 1 0 4 0M7 7.5h15.5v.25l-.239.283A16 16 0 0 0 18.5 18.34v.16h-13v-1.88c0-2.08-.066-4.158-.386-6.212C4.56 6.852 3.337 1.5 1 1.5"
+            />
+          </svg>
+        </ion-button> -->
+      </div>
+      <!-- </div> -->
+    </ion-card>
+    <!-- </ion-col> -->
+    }
+  </div>
+  <!-- </ion-row>
+  </ion-grid> -->
+</ion-content>

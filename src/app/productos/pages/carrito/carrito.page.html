@@ -1,0 +1,73 @@
+<ion-content [fullscreen]="true">
+  <ion-card class="card-title-box">
+    <ion-title size="large">Mi carrito</ion-title>
+  </ion-card>
+
+  @if ( productosCarrito ) {
+
+  <ion-card>
+    @for (pizza of productosCarrito; track $index) {
+    <div class="items-card">
+      <div>
+        <img [src]="pizza.foto" />
+      </div>
+      <div class="items-detalles-box">
+        <div>
+          <h5 style="color: #006bff">{{pizza.nombre}}</h5>
+        </div>
+        <div>
+          <p>
+            cantidad:<span style="color: burlywood"> {{pizza.cantidad}} </span>
+          </p>
+          <p>
+            precio total:
+            <span style="color: burlywood"
+              >S/ {{pizza.precioTotal.toFixed(2)}}</span
+            >
+          </p>
+        </div>
+        <div>
+          <ion-button fill="clear" (click)="borrarProducto(pizza.docId)">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="none"
+                stroke="#e11d48"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"
+              />
+            </svg>
+          </ion-button>
+        </div>
+      </div>
+    </div>
+    }
+  </ion-card>
+
+  @if (productosCarrito.length !== 0) {
+
+  <ion-card>
+    <div class="box-pago-final">
+      <h5 style="color: burlywood">
+        Precio total:
+        <span style="color: red">S/ {{precioTotalFinal?.toFixed(2)}}</span>
+      </h5>
+      <ion-button color="tertiary" (click)="comprar()" >Comprar</ion-button>
+    </div>
+  </ion-card>
+  }@else {
+  <ion-card style="text-align: center">
+    <h4>Agregue algunas pizzas al carrito</h4>
+  </ion-card>
+  } } @else {
+  <div class="box-spinner">
+    <ion-spinner></ion-spinner>
+  </div>
+  }
+</ion-content>
