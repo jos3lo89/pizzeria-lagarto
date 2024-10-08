@@ -1,0 +1,7 @@
+{
+  "name": "lagarto-store-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
