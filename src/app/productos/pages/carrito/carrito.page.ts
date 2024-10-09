@@ -45,6 +45,7 @@ export default class CarritoPage implements OnInit {
   private _currentUser: User | null = null;
   productosCarrito: ProductoCarritoFire[] | null = null;
   precioTotalFinal: number | null = null;
+  borrando = false;
 
   constructor() {}
 
@@ -80,18 +81,21 @@ export default class CarritoPage implements OnInit {
 
   async borrarProducto(id: string) {
     try {
+      this.borrando = true;
       await this._carritoService.borrarDelCarrito(id);
       this._toast.getToast('Pizza borrada del carrito', 'top', 'success');
 
       if (this._currentUser) {
         this.cargarProductosCarrito(this._currentUser.uid);
       }
+      this.borrando = false;
     } catch (error) {
       this._toast.getToast(
         'No se pudo borrar la pizza del carrito',
         'top',
         'danger'
       );
+      this.borrando = false;
       console.log(error);
     }
   }

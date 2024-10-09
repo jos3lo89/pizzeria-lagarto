@@ -10,9 +10,14 @@ import {
   addDoc,
   collection,
   doc,
+  endAt,
   Firestore,
   getDoc,
   getDocs,
+  orderBy,
+  startAt,
+  where,
+  query,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
@@ -102,6 +107,35 @@ export class ProductosService {
             ...querySnapShot.data(),
           } as ProductoFire;
           observer.next(item);
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+        });
+    });
+  }
+
+  obtenerPizzaPorNombre(nombre: string): Observable<ProductoFire[]> {
+    const docReferencia = collection(this._fireStore, this.nombreDeColecion);
+
+    const nombreMinuscula = nombre.toLocaleLowerCase();
+    const endNombre = nombreMinuscula + '\uf8ff';
+
+    const q = query(
+      docReferencia,
+      orderBy('nombreNormalizado'),
+      startAt(nombre),
+      endAt(endNombre)
+    );
+
+    return new Observable((observer) => {
+      getDocs(q)
+        .then((querySnapshot) => {
+          const items = querySnapshot.docs.map((doc) => {
+            return { id: doc.id, ...doc.data() } as ProductoFire;
+          });
+
+          observer.next(items);
           observer.complete();
         })
         .catch((error) => {
