@@ -1,6 +1,28 @@
 .busqueda-box {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
-  
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px; /* Espaciado entre las columnas */
+}
+
+.grid-container ion-card {
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.grid-container ion-card h4 {
+  color: #efefef;
+}
+
+ion-button {
+  text-transform: capitalize;
+}

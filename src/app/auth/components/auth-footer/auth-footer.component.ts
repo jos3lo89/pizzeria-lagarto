@@ -2,7 +2,12 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonTabBar, IonTabButton, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { logInOutline, personAddOutline } from 'ionicons/icons';
+import {
+  helpOutline,
+  homeOutline,
+  logInOutline,
+  personAddOutline,
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-auth-footer',
@@ -15,7 +20,7 @@ export class AuthFooterComponent implements OnInit {
   private _router = inject(Router);
 
   constructor() {
-    addIcons({ logInOutline, personAddOutline });
+    addIcons({ logInOutline, personAddOutline, homeOutline });
   }
 
   ngOnInit() {}
@@ -25,6 +30,11 @@ export class AuthFooterComponent implements OnInit {
   }
 
   navigationRoutes = [
+    {
+      path: '/pages/home',
+      name: 'Inicio',
+      icon: 'home-outline',
+    },
     {
       path: '/auth/login',
       name: 'Iniciar sesión',

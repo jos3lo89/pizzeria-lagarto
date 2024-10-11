@@ -14,6 +14,7 @@ import {
 import { AuthService } from 'src/app/auth/service/auth.service';
 import { Router } from '@angular/router';
 import { ToastService } from 'src/app/shared/services/toast.service';
+import { User } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-perfil',
@@ -38,7 +39,7 @@ export default class PerfilPage implements OnInit {
   private _router = inject(Router);
   private _toast = inject(ToastService);
 
-  usuario: any;
+  usuario: User | null = null;
 
   constructor() {}
 
@@ -53,7 +54,7 @@ export default class PerfilPage implements OnInit {
   async cerrarSesion() {
     try {
       await this._authService.cerrarSesion();
-      this._router.navigateByUrl('/auth/login');
+      this._router.navigateByUrl('/pages/home');
       this._toast.getToast('Cerraste sesión', 'middle', 'warning');
     } catch (error) {
       this._toast.getToast('Error al cerrar sesión', 'middle', 'danger');

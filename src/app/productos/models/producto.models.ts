@@ -9,11 +9,10 @@ export interface Producto {
 }
 
 export interface ProductoFire extends Producto {
-  id: string
+  id: string;
   foto: string;
   nombreNormalizado: string;
 }
-
 
 export interface ProductoCarrito {
   id: string;
@@ -22,10 +21,20 @@ export interface ProductoCarrito {
   nombre: string;
   precioTotal: number;
   precioUnitario: number;
-  tamano: string;
+  tamano: string | null;
   foto: string;
 }
 
 export interface ProductoCarritoFire extends ProductoCarrito {
   docId: string;
+}
+
+export interface Bebida {
+  nombre: string;
+  precio: number;
+}
+
+export interface BebidaFirebase extends Bebida {
+  foto: string;
+  id: string;
 }

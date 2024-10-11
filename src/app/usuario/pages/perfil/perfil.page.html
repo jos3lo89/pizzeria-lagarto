@@ -51,14 +51,18 @@
       </div>
     </ion-card-content>
   </ion-card>
-
-  <ion-card class="box-btn" >
+  @if (usuario.email === "admin@gg.com") {
+  <ion-card class="box-btn">
     <ion-button fill="clear" (click)="setRouter('/pages/agregar-pizza')">
       Agregar pizza
     </ion-button>
   </ion-card>
-
-  } @else {
+  <ion-card class="box-btn">
+    <ion-button fill="clear" (click)="setRouter('/pages/agregar-bebida')">
+      Agregar bebida
+    </ion-button>
+  </ion-card>
+  } } @else {
   <ion-spinner></ion-spinner>
   }
 </ion-content>

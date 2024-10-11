@@ -4,64 +4,43 @@
       Ir atras
     </ion-button>
   </ion-card>
-  <ion-title size="large" style="text-align: center;">Agregar pizza</ion-title>
-
+  <ion-title size="large" style="text-align: center;">Agregar bebida</ion-title>
 
   <ion-card class="box-form">
-    <form [formGroup]="form" (ngSubmit)="guardarPizza()">
+    <form [formGroup]="form" (ngSubmit)="guardarBebida()">
       <ion-input
-        formControlName="nombre"
+      formControlName="nombre"
+        type="text"
         label="Nombre"
         label-placement="floating"
         fill="solid"
         placeholder="Ingrese el nombre"
-        [counter]="true"
-        maxlength="50"
       ></ion-input>
       <br />
       <ion-input
-        formControlName="descripcion"
-        label="Descripción"
+      formControlName="precio"
+
+        type="number"
+        label="Precio"
         label-placement="floating"
         fill="solid"
-        placeholder="Ingrese la descripción"
-        [counter]="true"
-        maxlength="150"
+        placeholder="Ingrese el precio"
       ></ion-input>
       <br />
       <div class="form-box-title">
         <ion-title size="large">Precio por tamaño</ion-title>
       </div>
-      <div formGroupName="tamanosPrecios">
-        <ion-input
-          formControlName="pequena"
-          label="pequeña (S/) : "
-          type="number"
-        ></ion-input>
-        <ion-input
-          formControlName="mediana"
-          label="mediana (S/) : "
-          type="number"
-        ></ion-input>
-        <ion-input
-          formControlName="grande"
-          label="grande (S/) : "
-          type="number"
-        ></ion-input>
-      </div>
+
       <br />
 
       <ion-button color="tertiary" (click)="openModal2()"
         >Agregar foto</ion-button
       >
-      @if (fotoPizza) {
+      @if (fotoBebida) {
       <ion-card>
-        <img [src]="fotoPizza" alt="foto de la pizza" />
+        <img [src]="fotoBebida" alt="foto de la pizza" />
       </ion-card>
-      }
-
-      <!-- [initialBreakpoint]="0.50" [breakpoints]="[0, 0.25, 0.5, 0.75]" -->
-      @if (openModal) {
+      } @if (openModal) {
       <ion-modal [isOpen]="openModal">
         <ng-template>
           <ion-header>

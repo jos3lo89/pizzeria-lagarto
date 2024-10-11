@@ -1,0 +1,105 @@
+
+
+<ion-content [fullscreen]="true">
+  <ion-card class="box-back-btn">
+    <ion-button fill="clear" (click)="setRouter('/pages/lista-bebidas')">
+      <ion-text size="large" color="secondary">Atras</ion-text>
+    </ion-button>
+  </ion-card>
+
+
+  @if (bebida) {
+    <ion-card>
+      <div>
+        <div class="box-img">
+          <img class="img-detalles" [src]="bebida.foto" />
+        </div>
+        <div style="text-align: center">
+          <h5 style="color: yellow">{{bebida.nombre}}</h5>
+          <!-- <p>{{bebida.descripcion}}</p> -->
+        </div>
+      </div>
+    </ion-card>
+
+    <!-- <ion-card>
+      <div class="form-box">
+        <ion-select
+          label="Selecione su tamaño preferido"
+          label-placement="floating"
+          (ionChange)="onTamanoChange($event)"
+          [value]="'grande'"
+        >
+          <ion-select-option value="grande">Grande</ion-select-option>
+          <ion-select-option value="mediano">Mediano</ion-select-option>
+          <ion-select-option value="pequeno">Pequeño</ion-select-option>
+        </ion-select>
+      </div>
+    </ion-card> -->
+
+    <ion-card>
+      <div class="precios-box">
+        <div class="detalles-card-box">
+          <div class="detalle-card">
+            <p>Unidad</p>
+            <strong>S/ {{precioUnitario?.toFixed(2)}}</strong>
+          </div>
+          <div class="detalle-card">
+            <p>Total</p>
+            <strong>S/ {{precioTotal?.toFixed(2)}} </strong>
+          </div>
+        </div>
+
+        <div class="btns-precios">
+          <ion-button fill="clear" (click)="incrementarCantidad()">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="21"
+              height="21"
+              viewBox="0 0 24 24"
+            >
+              <path fill="#e11d48" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z" />
+            </svg>
+          </ion-button>
+          <ion-button fill="clear"> {{cantidad}} </ion-button>
+          <ion-button fill="clear" (click)="decrementarCantidad()">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="21"
+              height="21"
+              viewBox="0 0 20 20"
+            >
+              <path fill="#e11d48" d="M4 9h12v2H4z" />
+            </svg>
+          </ion-button>
+        </div>
+      </div>
+    </ion-card>
+
+    <ion-card class="btn-cart-box">
+      @if (!agregandoAlCarrito) {
+
+      <ion-button color="danger" fill="outline" (click)="agregarAlCarrito()">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="33"
+          height="33"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="none"
+            stroke="#e11d48"
+            d="M5.5 21a2 2 0 1 0 4 0m3 0a2 2 0 1 0 4 0M7 7.5h15.5v.25l-.239.283A16 16 0 0 0 18.5 18.34v.16h-13v-1.88c0-2.08-.066-4.158-.386-6.212C4.56 6.852 3.337 1.5 1 1.5"
+          />
+        </svg>
+      </ion-button>
+      } @else {
+      <ion-progress-bar type="indeterminate"></ion-progress-bar>
+      }
+    </ion-card>
+
+    } @else {
+    <div class="spinner-box">
+      <ion-spinner></ion-spinner>
+    </div>
+    }
+</ion-content>

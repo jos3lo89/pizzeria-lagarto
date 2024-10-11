@@ -44,7 +44,10 @@ export class ProductosService {
         await addDoc(pizzaReferencia, {
           ...producto,
           foto: fotoUrl,
-          nombreNormlizado: producto.nombre.toLocaleLowerCase(),
+          nombreNormlizado: producto.nombre
+            .toLocaleLowerCase()
+            .replace(/\s+/g, ''),
+          keywords: producto.nombre.toLocaleLowerCase().split(' '), // nombre partido en arrays
         });
       } catch (error) {
         console.log(error);
@@ -53,7 +56,7 @@ export class ProductosService {
     }
   }
 
-  async subirFoto(foto: string) {
+  private async subirFoto(foto: string) {
     try {
       const base64Parts = foto.split(';base64,');
       const contentType = base64Parts[0].split(':')[1];
@@ -115,17 +118,73 @@ export class ProductosService {
     });
   }
 
+  // obtenerPizzaPorNombre(nombre: string): Observable<ProductoFire[]> {
+  //   const docReferencia = collection(this._fireStore, this.nombreDeColecion);
+
+  //   const nombreMinuscula = nombre.toLocaleLowerCase();
+  //   const endNombre = nombreMinuscula + '\uf8ff';
+
+  //   const q = query(
+  //     docReferencia,
+  //     orderBy('nombreNormlizado'),
+  //     startAt(nombre),
+  //     endAt(endNombre)
+  //   );
+
+  //   return new Observable((observer) => {
+  //     getDocs(q)
+  //       .then((querySnapshot) => {
+  //         const items = querySnapshot.docs.map((doc) => {
+  //           return { id: doc.id, ...doc.data() } as ProductoFire;
+  //         });
+
+  //         observer.next(items);
+  //         observer.complete();
+  //       })
+  //       .catch((error) => {
+  //         observer.error(error);
+  //       });
+  //   });
+  // }
+
+  // obtenerPizzaPorNombre(nombre: string): Observable<ProductoFire[]> {
+  //   const docReferencia = collection(this._fireStore, this.nombreDeColecion);
+
+  //   // Normalizamos el nombre a minúsculas para la búsqueda
+  //   const nombreMinuscula = nombre.toLocaleLowerCase();
+
+  //   const q = query(
+  //     docReferencia,
+  //     where('keywords', 'array-contains', nombreMinuscula)
+  //   );
+
+  //   return new Observable((observer) => {
+  //     getDocs(q)
+  //       .then((querySnapshot) => {
+  //         const items = querySnapshot.docs.map((doc) => {
+  //           return { id: doc.id, ...doc.data() } as ProductoFire;
+  //         });
+
+  //         observer.next(items);
+  //         observer.complete();
+  //       })
+  //       .catch((error) => {
+  //         observer.error(error);
+  //       });
+  //   });
+  // }
+
   obtenerPizzaPorNombre(nombre: string): Observable<ProductoFire[]> {
     const docReferencia = collection(this._fireStore, this.nombreDeColecion);
 
-    const nombreMinuscula = nombre.toLocaleLowerCase();
-    const endNombre = nombreMinuscula + '\uf8ff';
+    // Normalizamos el término de búsqueda: todo en minúsculas y sin espacios
+    const nombreNormalizado = nombre.toLowerCase().replace(/\s+/g, '');
 
+    // Realizamos la consulta buscando coincidencias en 'nombreNormalizado'
     const q = query(
       docReferencia,
-      orderBy('nombreNormalizado'),
-      startAt(nombre),
-      endAt(endNombre)
+      where('nombreNormlizado', '>=', nombreNormalizado),
+      where('nombreNormlizado', '<=', nombreNormalizado + '\uf8ff') // Búsqueda parcial
     );
 
     return new Observable((observer) => {
@@ -143,4 +202,5 @@ export class ProductosService {
         });
     });
   }
+
 }

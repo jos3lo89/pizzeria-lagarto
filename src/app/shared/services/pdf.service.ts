@@ -8,7 +8,7 @@ export class PdfService {
   constructor() {}
 
   private datosDeEmpresa = {
-    nombre: 'Lagarto Store',
+    nombre: 'Pizzeria Lagarto',
     ruc: '235343263SDT2342',
     direccion: 'Jr. Tadeo Leguía 153',
     email: 'lagarto@gmail.com',
@@ -29,12 +29,12 @@ export class PdfService {
     const doc = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
-      format: [80, 200],
+      format: [90, 200],
     });
 
     // Datos de la empresa
     doc.setFontSize(9);
-    doc.text(this.datosDeEmpresa.nombre, 33,10, );
+    doc.text(this.datosDeEmpresa.nombre, 33, 10);
     doc.text(`RUC: ${this.datosDeEmpresa.ruc}`, 23, 16);
     doc.text(this.datosDeEmpresa.direccion, 23, 22);
     doc.text(`Email: ${this.datosDeEmpresa.email}`, 22, 28);
@@ -56,7 +56,9 @@ export class PdfService {
     let y = 100;
     carrito.producto.forEach((item: any) => {
       doc.text(
-        `    ${item.cantidad}       ${item.nombre} (${item.tamano})       ${item.precioUnitario}       ${item.precioTotal}`,
+        `${item.cantidad}       ${item.nombre} ${
+          item.tamano !== null ? '( ' + item.tamano + ' )' : ''
+        }       ${item.precioUnitario}       ${item.precioTotal}`,
         10,
         y
       );

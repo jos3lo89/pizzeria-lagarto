@@ -12,6 +12,7 @@ import {
 } from '@ionic/angular/standalone';
 import { ProductosService } from '../../service/productos.service';
 import { ProductoFire } from '../../models/producto.models';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-buscar-producto',
@@ -32,9 +33,10 @@ import { ProductoFire } from '../../models/producto.models';
 })
 export default class BuscarProductoPage implements OnInit {
   private _productoService = inject(ProductosService);
+  private _router = inject(Router);
 
   nombreBusqueda = '';
-  productos: ProductoFire[] | null = null;
+  productos: ProductoFire[] = [];
 
   constructor() {}
 
@@ -51,10 +53,19 @@ export default class BuscarProductoPage implements OnInit {
     this._productoService.obtenerPizzaPorNombre(nombre).subscribe({
       next: (data) => {
         this.productos = data;
-        console.log(data);
+        console.log('data de  la busqueda', data);
       },
       error: (error) => {
         console.log(error);
+      },
+    });
+  }
+
+  setRouter(id: string) {
+    this._router.navigate(['/pages/detalles'], {
+      queryParams: {
+        id,
+        back: 'buscar-producto',
       },
     });
   }

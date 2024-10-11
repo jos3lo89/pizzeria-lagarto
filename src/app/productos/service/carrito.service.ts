@@ -14,20 +14,32 @@ import {
   ProductoCarrito,
   ProductoCarritoFire,
 } from '../models/producto.models';
+import { AuthService } from 'src/app/auth/service/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CarritoService {
   private _firestore = inject(Firestore);
+  private _authService = inject(AuthService);
 
   private nombreColeccion = 'carrito';
-
+  private _isAuth = false;
   constructor() {}
 
   async agregarAlCarrito(producto: ProductoCarrito) {
+    // this._authService.authState$.subscribe({
+    //   next: (data) => {
+    //     if (data) {
+    //       this._isAuth = true;
+    //     }
+    //   },
+    // });
+
+    // if (!this._isAuth) return;
+
     const ref = collection(this._firestore, this.nombreColeccion);
-    await addDoc(ref, producto);
+    return await addDoc(ref, producto);
   }
 
   obtenerCarritoPorUsuario(id: string): Observable<ProductoCarritoFire[]> {

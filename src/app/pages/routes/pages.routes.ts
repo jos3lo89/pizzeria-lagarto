@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard, roleGuard } from 'src/app/auth/guards/auth.guard';
 
 export default [
   {
@@ -6,6 +7,7 @@ export default [
     loadComponent: () => import('../home/home.page'),
   },
   {
+    canActivate: [authGuard()],
     path: 'perfil',
     loadComponent: () => import('../../usuario/pages/perfil/perfil.page'),
   },
@@ -25,6 +27,7 @@ export default [
       import('../../productos/pages/lista-bebidas/lista-bebidas.page'),
   },
   {
+    canActivate: [roleGuard()],
     path: 'agregar-pizza',
     loadComponent: () =>
       import('../../productos/pages/agregar-pizza/agregar-pizza.page'),
@@ -35,7 +38,20 @@ export default [
       import('../../productos/pages/detalles-producto/detalles-producto.page'),
   },
   {
+    canActivate: [authGuard()],
     path: 'carrito',
     loadComponent: () => import('../../productos/pages/carrito/carrito.page'),
+  },
+  {
+    canActivate: [authGuard()],
+
+    path: 'agregar-bebida',
+    loadComponent: () =>
+      import('../../productos/pages/agregar-bebida/agregar-bebida.page'),
+  },
+  {
+    path: 'detalles-bebida',
+    loadComponent: () =>
+      import('../../productos/pages/detalles-bebida/detalles-bebida.page'),
   },
 ] as Routes;

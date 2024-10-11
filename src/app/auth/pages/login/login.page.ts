@@ -102,6 +102,7 @@ export default class LoginPage implements OnInit {
 
   async loginWithGoogle() {
     try {
+      this.isLoadingGoogleBtn = true;
       const user = await this._authService.loginWithGoogle();
       this._router.navigateByUrl('/pages/home');
       this._toast.getToast(
@@ -111,9 +112,11 @@ export default class LoginPage implements OnInit {
         'middle',
         'success'
       );
+      this.isLoadingGoogleBtn = false;
     } catch (error) {
       this._toast.getToast('Error al iniciar sesión', 'middle', 'danger');
       console.log(error);
+      this.isLoadingGoogleBtn = false;
     }
   }
 }

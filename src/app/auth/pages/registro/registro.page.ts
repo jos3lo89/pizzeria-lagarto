@@ -80,7 +80,7 @@ export default class RegistroPage implements OnInit {
         email,
         nombre,
         password,
-        rol: 'admin',
+        rol: 'user',
       });
 
       this._toast.getToast('Registro exitoso', 'middle', 'success');
