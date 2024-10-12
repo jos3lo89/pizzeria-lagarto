@@ -4,8 +4,7 @@
       Ir atras
     </ion-button>
   </ion-card>
-  <ion-title size="large" style="text-align: center;">Agregar pizza</ion-title>
-
+  <ion-title size="large" style="text-align: center">Agregar pizza</ion-title>
 
   <ion-card class="box-form">
     <form [formGroup]="form" (ngSubmit)="guardarPizza()">
@@ -29,12 +28,25 @@
         maxlength="150"
       ></ion-input>
       <br />
+      <br />
+      <ion-checkbox formControlName="gluten">Contiene gluten </ion-checkbox>
+      <br />
+      <br />
+      <ion-checkbox formControlName="picante">¿Es picante? </ion-checkbox>
+      <br />
+      <br />
+      <ion-checkbox formControlName="vegetariana"
+        >¿Es vegetariana?
+      </ion-checkbox>
+      <br />
+      <br />
+
       <div class="form-box-title">
         <ion-title size="large">Precio por tamaño</ion-title>
       </div>
       <div formGroupName="tamanosPrecios">
         <ion-input
-          formControlName="pequena"
+          formControlName="familiar"
           label="pequeña (S/) : "
           type="number"
         ></ion-input>

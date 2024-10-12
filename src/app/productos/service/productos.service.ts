@@ -1,5 +1,9 @@
-import { inject, Injectable } from '@angular/core';
-import { Producto, ProductoFire } from '../models/producto.models';
+import {
+  inject,
+  Injectable,
+  provideExperimentalCheckNoChangesForDebug,
+} from '@angular/core';
+import { Producto, ProductoAPi, ProductoFire } from '../models/producto.models';
 import {
   getDownloadURL,
   ref,
@@ -20,6 +24,7 @@ import {
   query,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { PizzaApiService } from 'src/app/shared/services/pizza-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,31 +32,66 @@ import { Observable } from 'rxjs';
 export class ProductosService {
   private _storage = inject(Storage);
   private _fireStore = inject(Firestore);
+  private _api = inject(PizzaApiService);
 
   private nombreDeColecion = 'pizzas';
 
   constructor() {}
 
-  async guardarProducto(producto: Producto, foto: string) {
+  async guardarProducto(producto: ProductoAPi, foto: string) {
     const fotoUrl = await this.subirFoto(foto);
+    console.log(fotoUrl);
 
     if (fotoUrl) {
       try {
-        const pizzaReferencia = collection(
-          this._fireStore,
-          this.nombreDeColecion
-        );
-        await addDoc(pizzaReferencia, {
-          ...producto,
-          foto: fotoUrl,
-          nombreNormlizado: producto.nombre
-            .toLocaleLowerCase()
-            .replace(/\s+/g, ''),
-          keywords: producto.nombre.toLocaleLowerCase().split(' '), // nombre partido en arrays
-        });
+        console.log('dentro de regitor');
+
+        this._api
+          .crearPizza({
+            description: producto.description,
+            image: fotoUrl,
+            name: producto.name,
+
+            size: producto.size,
+            isGlutenFree: producto.isGlutenFree,
+            isSpicy: producto.isSpicy,
+            isVegetarian: producto.isVegetarian,
+            price: {
+              big: producto.price.big,
+              family: producto.price.family,
+              medium: producto.price.medium,
+            },
+          })
+          .subscribe({
+            next: (response) => {
+              console.log(response);
+            },
+            error: (error) => {
+              console.log(error);
+            },
+          });
+
+        console.log('nose guardo wadfa');
       } catch (error) {
         console.log(error);
       }
+
+      // try {
+      //   const pizzaReferencia = collection(
+      //     this._fireStore,
+      //     this.nombreDeColecion
+      //   );
+      //   await addDoc(pizzaReferencia, {
+      //     ...producto,
+      //     foto: fotoUrl,
+      //     nombreNormlizado: producto.nombre
+      //       .toLocaleLowerCase()
+      //       .replace(/\s+/g, ''),
+      //     keywords: producto.nombre.toLocaleLowerCase().split(' '), // nombre partido en arrays
+      //   });
+      // } catch (error) {
+      //   console.log(error);
+      // }
     } else {
     }
   }
@@ -202,5 +242,4 @@ export class ProductosService {
         });
     });
   }
-
 }

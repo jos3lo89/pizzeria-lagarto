@@ -2,6 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
+  FormControl,
+  FormGroup,
   FormsModule,
   ReactiveFormsModule,
   Validators,
@@ -19,6 +21,7 @@ import {
   IonModal,
   IonButtons,
   IonIcon,
+  IonCheckbox,
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
@@ -26,6 +29,18 @@ import { addIcons } from 'ionicons';
 import { camera, cameraOutline, close, image } from 'ionicons/icons';
 import { ToastService } from 'src/app/shared/services/toast.service';
 import { ProductosService } from '../../service/productos.service';
+interface FormAgregarPizza {
+  nombre: FormControl<string | null>;
+  descripcion: FormControl<string | null>;
+  gluten: FormControl<boolean | null>;
+  picante: FormControl<boolean | null>;
+  vegetariana: FormControl<boolean | null>;
+  tamanosPrecios: FormGroup<{
+    familiar: FormControl<number | null>;
+    mediana: FormControl<number | null>;
+    grande: FormControl<number | null>;
+  }>;
+}
 
 @Component({
   selector: 'app-agregar-pizza',
@@ -33,6 +48,7 @@ import { ProductosService } from '../../service/productos.service';
   styleUrls: ['./agregar-pizza.page.scss'],
   standalone: true,
   imports: [
+    IonCheckbox,
     IonIcon,
     IonButtons,
     IonModal,
@@ -61,13 +77,26 @@ export default class AgregarPizzaPage implements OnInit {
   CameraSource = CameraSource;
   guardando = false;
 
-  form = this._formBuilder.group({
+  // Aplica la interfaz FormAgregarPizza
+  form = this._formBuilder.group<FormAgregarPizza>({
     nombre: this._formBuilder.control('', [Validators.required]),
     descripcion: this._formBuilder.control('', [Validators.required]),
+    gluten: this._formBuilder.control(false, [Validators.required]),
+    picante: this._formBuilder.control(false, [Validators.required]),
+    vegetariana: this._formBuilder.control(false, [Validators.required]),
     tamanosPrecios: this._formBuilder.group({
-      pequena: this._formBuilder.control(1, Validators.required),
-      mediana: this._formBuilder.control(1, Validators.required),
-      grande: this._formBuilder.control(1, Validators.required),
+      familiar: this._formBuilder.control<number | null>(
+        null,
+        Validators.required
+      ),
+      mediana: this._formBuilder.control<number | null>(
+        null,
+        Validators.required
+      ),
+      grande: this._formBuilder.control<number | null>(
+        null,
+        Validators.required
+      ),
     }),
   });
 
@@ -90,26 +119,42 @@ export default class AgregarPizzaPage implements OnInit {
       );
       return;
     }
-    const { nombre, descripcion, tamanosPrecios } = this.form.value;
+    const {
+      nombre,
+      descripcion,
+      tamanosPrecios,
+      gluten,
+      picante,
+      vegetariana,
+    } = this.form.value;
     if (!nombre || !descripcion || !tamanosPrecios) return;
-    const { grande, mediana, pequena } = tamanosPrecios;
-    if (!grande || !mediana || !pequena) return;
+    const { grande, mediana, familiar } = tamanosPrecios;
+    if (!grande || !mediana || !familiar) return;
 
     if (!this.fotoPizza) {
       this._toast.getToast('Falta la foto de la pizza', 'middle', 'warning');
       return;
     }
 
+    if (gluten == null || picante == null || vegetariana == null) {
+      return;
+    }
+
     try {
       this.guardando = true;
-     await this._productoService.guardarProducto(
+      await this._productoService.guardarProducto(
         {
-          nombre,
-          descripcion,
-          tamanosPrecios: {
-            grande,
-            mediana,
-            pequena,
+          name: nombre,
+          description: descripcion,
+          size: 'big',
+
+          isGlutenFree: gluten,
+          isSpicy: picante,
+          isVegetarian: vegetariana,
+          price: {
+            big: grande,
+            family: familiar,
+            medium: mediana,
           },
         },
         this.fotoPizza
