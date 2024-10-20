@@ -9,9 +9,14 @@ import {
   IonCard,
   IonButton,
 } from '@ionic/angular/standalone';
-import { Bebida, BebidaFirebase } from '../../models/producto.models';
+import {
+  Bebida,
+  BebidaFirebase,
+  BebidasApi,
+} from '../../models/producto.models';
 import { Router } from '@angular/router';
-import { BebidaService } from '../../service/bebida.service';
+// import { BebidaService } from '../../service/bebida.service';
+import { BebidaApiService } from 'src/app/shared/services/bebida-api.service';
 
 @Component({
   selector: 'app-lista-bebidas',
@@ -31,22 +36,34 @@ import { BebidaService } from '../../service/bebida.service';
 })
 export default class ListaBebidasPage implements OnInit {
   private _router = inject(Router);
-  private _bebidaService = inject(BebidaService);
-
+  // private _bebidaService = inject(BebidaService);
+  private _bebidaApiService = inject(BebidaApiService);
   constructor() {}
 
-  productos: BebidaFirebase[] = [];
+  productos: BebidasApi[] = [];
 
-  ngOnInit() {
-    this._bebidaService.obtenerBebidas().subscribe({
-      next: (data) => {
-        console.log(data);
-        this.productos = data;
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    });
+  async ngOnInit() {
+    // this._bebidaService.obtenerBebidas().subscribe({
+    //   next: (data) => {
+    //     console.log(data);
+    //     this.productos = data;
+    //   },
+    //   error: (error) => {
+    //     console.log(error);
+    //   },
+    // });
+
+    await this.obtenerBebidas();
+  }
+
+  async obtenerBebidas() {
+    try {
+      const res = await this._bebidaApiService.obtenerBebidas();
+
+      this.productos = res.data;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   setRouter(id: string) {

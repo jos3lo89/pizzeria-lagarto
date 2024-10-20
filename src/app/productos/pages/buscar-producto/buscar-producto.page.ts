@@ -10,9 +10,8 @@ import {
   IonSearchbar,
   IonCard,
 } from '@ionic/angular/standalone';
-import { ProductosService } from '../../service/productos.service';
-import { ProductoFire } from '../../models/producto.models';
 import { Router } from '@angular/router';
+import { BusquedaApiService } from 'src/app/shared/services/busqueda-api.service';
 
 @Component({
   selector: 'app-buscar-producto',
@@ -32,37 +31,42 @@ import { Router } from '@angular/router';
   ],
 })
 export default class BuscarProductoPage implements OnInit {
-  private _productoService = inject(ProductosService);
   private _router = inject(Router);
+  private _busquedaApiService = inject(BusquedaApiService);
 
   nombreBusqueda = '';
-  productos: ProductoFire[] = [];
+  productos: any = [];
 
   constructor() {}
 
   ngOnInit() {}
 
-  buscar() {
+  async buscar() {
     if (this.nombreBusqueda.trim()) {
-      console.log(this.nombreBusqueda);
-      this.obtenerProductos(this.nombreBusqueda);
+      await this.obtenerProductosPorNombre(this.nombreBusqueda);
     }
   }
 
-  obtenerProductos(nombre: string) {
-    this._productoService.obtenerPizzaPorNombre(nombre).subscribe({
-      next: (data) => {
-        this.productos = data;
-        console.log('data de  la busqueda', data);
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    });
+  async obtenerProductosPorNombre(nombre: string) {
+    try {
+      const res = await this._busquedaApiService.buscaPorNombre(nombre);
+      this.productos = res.data;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   setRouter(id: string) {
     this._router.navigate(['/pages/detalles'], {
+      queryParams: {
+        id,
+        back: 'buscar-producto',
+      },
+    });
+  }
+
+  setRouterBebida(id: string) {
+    this._router.navigate(['/pages/detalles-bebida'], {
       queryParams: {
         id,
         back: 'buscar-producto',

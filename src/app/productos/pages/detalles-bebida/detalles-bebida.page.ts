@@ -13,11 +13,13 @@ import {
   IonSpinner,
 } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BebidaFirebase } from '../../models/producto.models';
+import { BebidaApiPorId, BebidaFirebase } from '../../models/producto.models';
 import { ToastService } from 'src/app/shared/services/toast.service';
-import { BebidaService } from '../../service/bebida.service';
-import { CarritoService } from '../../service/carrito.service';
+// import { BebidaService } from '../../service/bebida.service';
+// import { CarritoService } from '../../service/carrito.service';
 import { AuthService } from 'src/app/auth/service/auth.service';
+import { BebidaApiService } from 'src/app/shared/services/bebida-api.service';
+import { CarritoApiService } from 'src/app/shared/services/carrito-api.service';
 
 @Component({
   selector: 'app-detalles-bebida',
@@ -42,13 +44,15 @@ export default class DetallesBebidaPage implements OnInit {
   private _router = inject(Router);
   private _toast = inject(ToastService);
   private _activateRoute = inject(ActivatedRoute);
-  private _bebidaService = inject(BebidaService);
-  private _carritoService = inject(CarritoService);
+  // private _bebidaService = inject(BebidaService);
+  // private _carritoService = inject(CarritoService);
   private _authService = inject(AuthService);
+  private _bebidaApiService = inject(BebidaApiService);
+  private _carritoApiService = inject(CarritoApiService);
 
   params = { id: '' };
   backUrl: string | null = null;
-  bebida: BebidaFirebase | null = null;
+  bebida: BebidaApiPorId | null = null;
   agregandoAlCarrito = false;
   cantidad: number = 1;
   precioUnitario: number | null = null;
@@ -59,19 +63,19 @@ export default class DetallesBebidaPage implements OnInit {
     this._activateRoute.queryParams.subscribe((param) => {
       if (param['id']) {
         this.params.id = param['id'];
-        this._bebidaService.obtnerBebidaPorId(param['id']).subscribe({
-          next: (data) => {
-            console.log(data);
-            this.bebida = data;
-            console.log(data.foto);
+        // this._bebidaService.obtnerBebidaPorId(param['id']).subscribe({
+        //   next: (data) => {
+        //     console.log(data);
+        //     this.bebida = data;
+        //     console.log(data.foto);
 
-            this.precioUnitario = data.precio;
-            this.calcularPrecioTotal();
-          },
-          error: (error) => {
-            console.log(error);
-          },
-        });
+        //     this.precioUnitario = data.precio;
+        //     this.calcularPrecioTotal();
+        //   },
+        //   error: (error) => {
+        //     console.log(error);
+        //   },
+        // });
 
         this.backUrl = param['back'] ? param['back'] : null;
       }
@@ -87,7 +91,23 @@ export default class DetallesBebidaPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  async ngOnInit() {
+    await this.obetenerBebidaPorId(this.params.id);
+  }
+
+  async obetenerBebidaPorId(id: string) {
+    try {
+      const res = await this._bebidaApiService.obtenerBebidaPorId(id);
+
+      this.bebida = res.data;
+      console.log(res.data);
+
+      this.precioUnitario = res.data.precio;
+      this.calcularPrecioTotal();
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   setRouter(route: string) {
     // this._router.navigateByUrl('/pages/lista-bebidas');
@@ -137,15 +157,25 @@ export default class DetallesBebidaPage implements OnInit {
 
       console.log('el click llego aqui 1');
 
-      const newProdcutoCart = await this._carritoService.agregarAlCarrito({
-        idUser: this.idUser,
-        precioTotal: this.precioTotal,
-        precioUnitario: this.precioUnitario,
+      // const newProdcutoCart = await this._carritoService.agregarAlCarrito({
+      //   idUser: this.idUser,
+      //   precioTotal: this.precioTotal,
+      //   precioUnitario: this.precioUnitario,
+      //   cantidad: this.cantidad,
+      //   foto: this.bebida.imagen_url,
+      //   id: this.params.id,
+      //   nombre: this.bebida.nombre,
+      //   tamano: null,
+      // });
+
+      const newProdcutoCart = await this._carritoApiService.agregarAlCarrito({
         cantidad: this.cantidad,
-        foto: this.bebida.foto,
-        id: this.params.id,
+        id_producto: this.params.id,
+        id_user: this.idUser,
+        imagen_url: this.bebida.imagen_url,
         nombre: this.bebida.nombre,
-        tamano: null,
+        precio_total: this.precioTotal,
+        precio_unitario: this.precioUnitario,
       });
 
       console.log('el click llego aqui 2');

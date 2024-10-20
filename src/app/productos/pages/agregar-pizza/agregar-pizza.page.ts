@@ -28,7 +28,8 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { addIcons } from 'ionicons';
 import { camera, cameraOutline, close, image } from 'ionicons/icons';
 import { ToastService } from 'src/app/shared/services/toast.service';
-import { ProductosService } from '../../service/productos.service';
+// import { ProductosService } from '../../service/productos.service';
+import { PizzaApiService } from 'src/app/shared/services/pizza-api.service';
 interface FormAgregarPizza {
   nombre: FormControl<string | null>;
   descripcion: FormControl<string | null>;
@@ -70,7 +71,8 @@ export default class AgregarPizzaPage implements OnInit {
   private _router = inject(Router);
   private _formBuilder = inject(FormBuilder);
   private _toast = inject(ToastService);
-  private _productoService = inject(ProductosService);
+  // private _productoService = inject(ProductosService);
+  private _pizzaApiService = inject(PizzaApiService);
 
   fotoPizza: string | undefined = undefined;
   openModal = false;
@@ -142,23 +144,42 @@ export default class AgregarPizzaPage implements OnInit {
 
     try {
       this.guardando = true;
-      await this._productoService.guardarProducto(
-        {
-          name: nombre,
-          description: descripcion,
-          size: 'big',
+      // await this._productoService.guardarProducto(
+      //   {
+      //     name: nombre,
+      //     description: descripcion,
+      //     size: 'big',
 
-          isGlutenFree: gluten,
-          isSpicy: picante,
-          isVegetarian: vegetariana,
-          price: {
-            big: grande,
-            family: familiar,
-            medium: mediana,
-          },
+      //     isGlutenFree: gluten,
+      //     isSpicy: picante,
+      //     isVegetarian: vegetariana,
+      //     price: {
+      //       big: grande,
+      //       family: familiar,
+      //       medium: mediana,
+      //     },
+      //   },
+      //   this.fotoPizza
+      // );
+
+      // api START
+
+      await this._pizzaApiService.crearPizza(
+        {
+          categoria: 'vegetariana',
+          descripcion,
+          descuento: 10,
+          disponible: true,
+          familiar: grande,
+          mediana: familiar,
+          personal: mediana,
+          nombre,
+          promocion: true,
+          tiempo_preparacion: 23,
         },
         this.fotoPizza
       );
+      // api ENd
 
       this._toast.getToast('Pizza agreado', 'middle', 'success');
       this.guardando = false;

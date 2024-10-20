@@ -13,10 +13,10 @@ import {
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/auth/service/auth.service';
 import { User } from '@angular/fire/auth';
-import { ProductoCarritoFire } from '../../models/producto.models';
-import { CarritoService } from '../../service/carrito.service';
+import { ProductoListApi } from '../../models/producto.models';
 import { ToastService } from 'src/app/shared/services/toast.service';
 import { PdfService } from 'src/app/shared/services/pdf.service';
+import { CarritoApiService } from 'src/app/shared/services/carrito-api.service';
 
 @Component({
   selector: 'app-carrito',
@@ -38,60 +38,65 @@ import { PdfService } from 'src/app/shared/services/pdf.service';
 })
 export default class CarritoPage implements OnInit {
   private _authService = inject(AuthService);
-  private _carritoService = inject(CarritoService);
   private _toast = inject(ToastService);
   private _pdfService = inject(PdfService);
+  private _carritoApiService = inject(CarritoApiService);
 
   private _currentUser: User | null = null;
-  productosCarrito: ProductoCarritoFire[] | null = null;
+  productosCarrito: ProductoListApi[] | null = null;
   precioTotalFinal: number | null = null;
   borrando = false;
 
   constructor() {}
 
-  ngOnInit() {
+  async ngOnInit() {}
+
+  async ionViewWillEnter() {
     this._authService.authState$.subscribe({
       next: (data) => {
         this._currentUser = data;
         if (this._currentUser) {
-          this.cargarProductosCarrito(this._currentUser.uid);
+          this._carritoApiService
+            .obtenerCarritoPorIdUser(this._currentUser.uid)
+            .then((res) => {
+              this.productosCarrito = res.data;
+              this.calcularPrecioTotal();
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         }
       },
     });
   }
 
-  ionViewWillEnter() {
-    if (this._currentUser) {
-      this.cargarProductosCarrito(this._currentUser.uid);
+  calcularPrecioTotal() {
+    if (this.productosCarrito) {
+      this.precioTotalFinal = this.productosCarrito.reduce(
+        (acumulador, producto) => acumulador + producto.precio_total,
+        0
+      );
     }
-  }
-
-  cargarProductosCarrito(idUser: string) {
-    this._carritoService.obtenerCarritoPorUsuario(idUser).subscribe({
-      next: (data) => {
-        this.productosCarrito = data;
-
-        this.precioTotalFinal = this.productosCarrito.reduce(
-          (acumulador, producto) => acumulador + producto.precioTotal,
-          0
-        );
-      },
-    });
   }
 
   async borrarProducto(id: string) {
     try {
       this.borrando = true;
-      await this._carritoService.borrarDelCarrito(id);
-      this._toast.getToast('Pizza borrada del carrito', 'top', 'success');
+      await this._carritoApiService.borrarProducto(id);
+      this._toast.getToast('Producto borrado del carrito', 'top', 'success');
 
       if (this._currentUser) {
-        this.cargarProductosCarrito(this._currentUser.uid);
+        const res = await this._carritoApiService.obtenerCarritoPorIdUser(
+          this._currentUser.uid
+        );
+        this.productosCarrito = res.data;
+        this.calcularPrecioTotal();
       }
+
       this.borrando = false;
     } catch (error) {
       this._toast.getToast(
-        'No se pudo borrar la pizza del carrito',
+        'No se pudo borrar el producto del carrito',
         'top',
         'danger'
       );
@@ -105,6 +110,8 @@ export default class CarritoPage implements OnInit {
       producto: this.productosCarrito,
       totalPagar: this.precioTotalFinal,
     });
+
+    if (!this.productosCarrito || !this.precioTotalFinal) return;
 
     this._pdfService.generarBoleta({
       producto: this.productosCarrito,

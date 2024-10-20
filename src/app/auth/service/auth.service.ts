@@ -6,7 +6,6 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
-  User,
 } from '@angular/fire/auth';
 import { UserLogin, UserRegister } from '../models/auth.models';
 import { doc, Firestore, setDoc } from '@angular/fire/firestore';

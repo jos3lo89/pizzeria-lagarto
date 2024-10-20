@@ -1,25 +1,30 @@
-import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import {
-  PizzaApiRegister,
-  Productotype,
-} from 'src/app/productos/models/producto.models';
+import { PizzaApiRegister } from 'src/app/productos/models/producto.models';
+import { AxiosService } from './axios.service';
+import { SubirImgService } from './subir-img.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PizzaApiService {
-  private _http = inject(HttpClient);
+  private _axios = inject(AxiosService);
+  private _subirImgService = inject(SubirImgService);
 
-  private _apiUrl = 'http://localhost:3000';
   constructor() {}
 
-  crearPizza(pizza: PizzaApiRegister): Observable<any> {
-    return this._http.post(`${this._apiUrl}/pizza`, pizza);
+  async crearPizza(pizza: PizzaApiRegister, foto: string) {
+    const imagen_url = await this._subirImgService.subirFoto(foto);
+    return await this._axios.getAxiosClient().post('/pizza', {
+      ...pizza,
+      imagen_url,
+    });
   }
 
-  obtenerPizzas(): Observable<any> {
-    return this._http.get(`${this._apiUrl}/pizza`);
+  async obtenerPizzas() {
+    return await this._axios.getAxiosClient().get('/pizza');
+  }
+
+  async obtenerPizzaPorId(id: string) {
+    return await this._axios.getAxiosClient().get(`/pizza/${id}`);
   }
 }

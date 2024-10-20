@@ -2,7 +2,6 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../service/auth.service';
 import { map } from 'rxjs';
-import { User } from '@angular/fire/auth';
 
 export const authGuard = (): CanActivateFn => {
   return () => {
@@ -11,7 +10,7 @@ export const authGuard = (): CanActivateFn => {
 
     return authService.authState$.pipe(
       map((state) => {
-        console.log('estado del guard', state);
+        // console.log('estado del guard', state);
         if (!state) {
           router.navigateByUrl('/auth/login');
           return false;

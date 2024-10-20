@@ -20,11 +20,12 @@ import {
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { ToastService } from 'src/app/shared/services/toast.service';
-import { ProductosService } from '../../service/productos.service';
+// import { ProductosService } from '../../service/productos.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { addIcons } from 'ionicons';
 import { camera, close, image } from 'ionicons/icons';
-import { BebidaService } from '../../service/bebida.service';
+// import { BebidaService } from '../../service/bebida.service';
+import { BebidaApiService } from 'src/app/shared/services/bebida-api.service';
 
 @Component({
   selector: 'app-agregar-bebida',
@@ -52,7 +53,8 @@ export default class AgregarBebidaPage implements OnInit {
   private _formBuilder = inject(FormBuilder);
   private _toast = inject(ToastService);
   // private _productoService = inject(ProductosService);
-  private _bebidaService = inject(BebidaService);
+  // private _bebidaService = inject(BebidaService);
+  private _bebidaApiService = inject(BebidaApiService);
 
   fotoBebida: string | undefined = undefined;
   openModal = false;
@@ -61,6 +63,7 @@ export default class AgregarBebidaPage implements OnInit {
 
   form = this._formBuilder.group({
     nombre: this._formBuilder.control('', [Validators.required]),
+    descripcion: this._formBuilder.control('', [Validators.required]),
     precio: this._formBuilder.control(999, [Validators.required]),
   });
 
@@ -82,8 +85,8 @@ export default class AgregarBebidaPage implements OnInit {
       return;
     }
 
-    const { nombre, precio } = this.form.value;
-    if (!nombre || !precio) return;
+    const { nombre, precio, descripcion } = this.form.value;
+    if (!nombre || !precio || !descripcion) return;
     if (!this.fotoBebida) {
       this._toast.getToast('Falta la foto de la bebida', 'middle', 'warning');
       return;
@@ -92,8 +95,17 @@ export default class AgregarBebidaPage implements OnInit {
     try {
       this.guardando = true;
 
-      await this._bebidaService.guardarBebida(
+      // await this._bebidaService.guardarBebida(
+      //   {
+      //     nombre,
+      //     precio,
+      //   },
+      //   this.fotoBebida
+      // );
+
+      await this._bebidaApiService.crearBebida(
         {
+          descripcion,
           nombre,
           precio,
         },

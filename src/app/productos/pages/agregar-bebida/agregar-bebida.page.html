@@ -4,12 +4,12 @@
       Ir atras
     </ion-button>
   </ion-card>
-  <ion-title size="large" style="text-align: center;">Agregar bebida</ion-title>
+  <ion-title size="large" style="text-align: center">Agregar bebida</ion-title>
 
   <ion-card class="box-form">
     <form [formGroup]="form" (ngSubmit)="guardarBebida()">
       <ion-input
-      formControlName="nombre"
+        formControlName="nombre"
         type="text"
         label="Nombre"
         label-placement="floating"
@@ -18,8 +18,16 @@
       ></ion-input>
       <br />
       <ion-input
-      formControlName="precio"
-
+        formControlName="descripcion"
+        type="text"
+        label="Descripción"
+        label-placement="floating"
+        fill="solid"
+        placeholder="Ingrese la descripción"
+      ></ion-input>
+      <br />
+      <ion-input
+        formControlName="precio"
         type="number"
         label="Precio"
         label-placement="floating"

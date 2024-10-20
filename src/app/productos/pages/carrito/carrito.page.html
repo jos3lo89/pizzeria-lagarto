@@ -9,7 +9,7 @@
     @for (pizza of productosCarrito; track $index) {
     <div class="items-card">
       <div>
-        <img [src]="pizza.foto" />
+        <img [src]="pizza.imagen_url" />
       </div>
       <div class="items-detalles-box">
         <div>
@@ -22,12 +22,12 @@
           <p>
             precio total:
             <span style="color: burlywood"
-              >S/ {{pizza.precioTotal.toFixed(2)}}</span
+              >S/ {{pizza.precio_total.toFixed(2)}}</span
             >
           </p>
         </div>
         <div>
-          <ion-button fill="clear" (click)="borrarProducto(pizza.docId)">
+          <ion-button fill="clear" (click)="borrarProducto(pizza.id)">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="22"

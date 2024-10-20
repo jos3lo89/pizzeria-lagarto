@@ -1,6 +1,19 @@
 import { Injectable } from '@angular/core';
 import { jsPDF } from 'jspdf';
 
+export interface ProductoPdf {
+  id: string;
+  id_user: string;
+  id_producto: string;
+  nombre: string;
+  imagen_url: string;
+  cantidad: number;
+  precio_total: number;
+  precio_unitario: number;
+  created_at: string;
+  updated_at: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -8,11 +21,11 @@ export class PdfService {
   constructor() {}
 
   private datosDeEmpresa = {
-    nombre: 'Pizzeria Lagarto',
+    nombre: 'Pizzeria Rabit',
     ruc: '235343263SDT2342',
     direccion: 'Jr. Tadeo Leguía 153',
-    email: 'lagarto@gmail.com',
-    web: 'www.lagartostore.com',
+    email: 'rabit@gmail.com',
+    web: 'www.rabit.com',
   };
 
   private ticketInfo = {
@@ -25,7 +38,7 @@ export class PdfService {
     direccion: '------',
   };
 
-  generarBoleta(carrito: any) {
+  generarBoleta(carrito: { producto: ProductoPdf[]; totalPagar: number }) {
     const doc = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
@@ -52,22 +65,24 @@ export class PdfService {
     doc.text(`Dirección: ${this.ticketInfo.direccion}`, 10, 84);
 
     // Detalle de productos
-    doc.text('CANT      NOMBRE           P. UNIT   TOTAL', 10, 94);
+    doc.text('CANT', 10, 94);
+    doc.text('NOMBRE', 25, 94);
+    doc.text('P. UNIT', 50, 94);
+    doc.text('TOTAL', 70, 94);
+
     let y = 100;
-    carrito.producto.forEach((item: any) => {
-      doc.text(
-        `${item.cantidad}       ${item.nombre} ${
-          item.tamano !== null ? '( ' + item.tamano + ' )' : ''
-        }       ${item.precioUnitario}       ${item.precioTotal}`,
-        10,
-        y
-      );
+
+    carrito.producto.forEach((item: ProductoPdf) => {
+      doc.text(`${item.cantidad}`, 10, y);
+      doc.text(`${item.nombre.substring(0, 20)}`, 30, y);
+      doc.text(`${item.precio_unitario.toFixed(2)}`, 60, y, { align: 'right' });
+      doc.text(`${item.precio_total.toFixed(2)}`, 80, y, { align: 'right' });
       y += 6;
     });
 
     // Total a pagar
     doc.setFontSize(12);
-    doc.text(`Total a pagar: S/ ${carrito.totalPagar}`, 10, y + 10);
+    doc.text(`Total a pagar: S/ ${carrito.totalPagar.toFixed(2)}`, 10, y + 10);
 
     const blob = doc.output('blob');
     const url = URL.createObjectURL(blob);

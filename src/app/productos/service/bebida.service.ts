@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+/* import { inject, Injectable } from '@angular/core';
 import {
   addDoc,
   collection,
@@ -20,89 +20,90 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class BebidaService {
-  private _firestore = inject(Firestore);
-  private _storage = inject(Storage);
+  // private _firestore = inject(Firestore);
+  // private _storage = inject(Storage);
 
-  private _colecionNombre = 'bebidas';
+  // private _colecionNombre = 'bebidas';
 
-  constructor() {}
+  // constructor() {}
 
-  async guardarBebida(bebida: Bebida, fotoBebida: string) {
-    const fotoUrl = await this.subirFoto(fotoBebida);
+  // async guardarBebida(bebida: Bebida, fotoBebida: string) {
+  //   const fotoUrl = await this.subirFoto(fotoBebida);
 
-    if (fotoUrl) {
-      const coleccionReferencia = collection(
-        this._firestore,
-        this._colecionNombre
-      );
-      await addDoc(coleccionReferencia, {
-        nombre: bebida.nombre,
-        precio: bebida.precio,
-        foto: fotoUrl,
-      });
-    }
-  }
+  //   if (fotoUrl) {
+  //     const coleccionReferencia = collection(
+  //       this._firestore,
+  //       this._colecionNombre
+  //     );
+  //     await addDoc(coleccionReferencia, {
+  //       nombre: bebida.nombre,
+  //       precio: bebida.precio,
+  //       foto: fotoUrl,
+  //     });
+  //   }
+  // }
 
-  obtenerBebidas(): Observable<BebidaFirebase[]> {
-    const coleccionReferencia = collection(this._firestore, 'bebidas');
+  // obtenerBebidas(): Observable<BebidaFirebase[]> {
+  //   const coleccionReferencia = collection(this._firestore, 'bebidas');
 
-    return new Observable((observer) => {
-      getDocs(coleccionReferencia)
-        .then((querySnapshot) => {
-          const items = querySnapshot.docs.map((doc) => {
-            return { id: doc.id, ...doc.data() } as BebidaFirebase;
-          });
+  //   return new Observable((observer) => {
+  //     getDocs(coleccionReferencia)
+  //       .then((querySnapshot) => {
+  //         const items = querySnapshot.docs.map((doc) => {
+  //           return { id: doc.id, ...doc.data() } as BebidaFirebase;
+  //         });
 
-          observer.next(items);
-          observer.complete();
-        })
-        .catch((error) => {
-          observer.error(error);
-        });
-    });
-  }
+  //         observer.next(items);
+  //         observer.complete();
+  //       })
+  //       .catch((error) => {
+  //         observer.error(error);
+  //       });
+  //   });
+  // }
 
-  obtnerBebidaPorId(id: string): Observable<BebidaFirebase> {
-    const coleccionReferencia = doc(this._firestore, `bebidas/${id}`);
+  // obtnerBebidaPorId(id: string): Observable<BebidaFirebase> {
+  //   const coleccionReferencia = doc(this._firestore, `bebidas/${id}`);
 
-    return new Observable((observer) => {
-      getDoc(coleccionReferencia)
-        .then((querySnapShot) => {
-          const item = {
-            id: querySnapShot.id,
-            ...querySnapShot.data(),
-          } as BebidaFirebase;
+  //   return new Observable((observer) => {
+  //     getDoc(coleccionReferencia)
+  //       .then((querySnapShot) => {
+  //         const item = {
+  //           id: querySnapShot.id,
+  //           ...querySnapShot.data(),
+  //         } as BebidaFirebase;
 
-          observer.next(item);
+  //         observer.next(item);
 
-          observer.complete();
-        })
-        .catch((error) => {
-          observer.error(error);
-        });
-    });
-  }
+  //         observer.complete();
+  //       })
+  //       .catch((error) => {
+  //         observer.error(error);
+  //       });
+  //   });
+  // }
 
-  private async subirFoto(foto: string) {
-    try {
-      const base64Parts = foto.split(';base64,');
-      const contentType = base64Parts[0].split(':')[1];
-      const base64String = base64Parts[1];
+  // private async subirFoto(foto: string) {
+  //   try {
+  //     const base64Parts = foto.split(';base64,');
+  //     const contentType = base64Parts[0].split(':')[1];
+  //     const base64String = base64Parts[1];
 
-      const imgRef = ref(
-        this._storage,
-        `bebidas/${Date.now()}-${Math.floor(
-          Math.random() * (9999 - 1000 + 1) + 1000
-        )}-${Math.floor(Math.random() * (999 - 100 + 1) + 100)}`
-      );
+  //     const imgRef = ref(
+  //       this._storage,
+  //       `bebidas/${Date.now()}-${Math.floor(
+  //         Math.random() * (9999 - 1000 + 1) + 1000
+  //       )}-${Math.floor(Math.random() * (999 - 100 + 1) + 100)}`
+  //     );
 
-      const uploadResult = await uploadString(imgRef, base64String, 'base64', {
-        contentType,
-      });
+  //     const uploadResult = await uploadString(imgRef, base64String, 'base64', {
+  //       contentType,
+  //     });
 
-      return await getDownloadURL(uploadResult.ref);
-    } catch (error) {
-      return null;
-    }
-  }
+  //     return await getDownloadURL(uploadResult.ref);
+  //   } catch (error) {
+  //     return null;
+  //   }
+  // }
 }
+ */
