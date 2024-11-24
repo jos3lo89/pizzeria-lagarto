@@ -48,12 +48,8 @@ export default class BuscarProductoPage implements OnInit {
   }
 
   async obtenerProductosPorNombre(nombre: string) {
-    try {
-      const res = await this._busquedaApiService.buscaPorNombre(nombre);
-      this.productos = res.data;
-    } catch (error) {
-      console.log(error);
-    }
+    this.productos = await this._busquedaApiService.buscaPorNombre(nombre);
+    // console.log(this.productos);
   }
 
   setRouter(id: string) {

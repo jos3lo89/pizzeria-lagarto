@@ -10,10 +10,10 @@ import {
   IonButton,
 } from '@ionic/angular/standalone';
 import {
-  Bebida,
-  BebidaFirebase,
+  // Bebida,
+  // BebidaFirebase,
   BebidasApi,
-} from '../../models/producto.models';
+} from '../../productos/models/producto.models';
 import { Router } from '@angular/router';
 // import { BebidaService } from '../../service/bebida.service';
 import { BebidaApiService } from 'src/app/shared/services/bebida-api.service';
@@ -57,13 +57,7 @@ export default class ListaBebidasPage implements OnInit {
   }
 
   async obtenerBebidas() {
-    try {
-      const res = await this._bebidaApiService.obtenerBebidas();
-
-      this.productos = res.data;
-    } catch (error) {
-      console.log(error);
-    }
+    this.productos = await this._bebidaApiService.obtenerBebidas();
   }
 
   setRouter(id: string) {

@@ -28,17 +28,33 @@
         maxlength="150"
       ></ion-input>
       <br />
+
+      <ion-select
+        label="Categoria"
+        label-placement="floating"
+        formControlName="categoria"
+      >
+        <ion-select-option value="vegetariana">vegetariana</ion-select-option>
+        <ion-select-option value="carnes">carnes</ion-select-option>
+      </ion-select>
+
       <br />
-      <ion-checkbox formControlName="gluten">Contiene gluten </ion-checkbox>
+      <ion-input
+        formControlName="tiempo_preparacion"
+        type="number"
+        label="Tiempo preparación  (min): "
+        type="number"
+      ></ion-input>
       <br />
-      <br />
-      <ion-checkbox formControlName="picante">¿Es picante? </ion-checkbox>
-      <br />
-      <br />
-      <ion-checkbox formControlName="vegetariana"
-        >¿Es vegetariana?
-      </ion-checkbox>
-      <br />
+      <ion-select
+        label="Descuento"
+        label-placement="floating"
+        formControlName="descuento"
+      >
+        <ion-select-option value="0.1">10%</ion-select-option>
+        <ion-select-option value="0.2">20%</ion-select-option>
+        <ion-select-option value="0.3">30%</ion-select-option>
+      </ion-select>
       <br />
 
       <div class="form-box-title">
@@ -47,7 +63,7 @@
       <div formGroupName="tamanosPrecios">
         <ion-input
           formControlName="familiar"
-          label="pequeña (S/) : "
+          label="familiar (S/) : "
           type="number"
         ></ion-input>
         <ion-input
@@ -56,8 +72,8 @@
           type="number"
         ></ion-input>
         <ion-input
-          formControlName="grande"
-          label="grande (S/) : "
+          formControlName="personal"
+          label="personal (S/) : "
           type="number"
         ></ion-input>
       </div>

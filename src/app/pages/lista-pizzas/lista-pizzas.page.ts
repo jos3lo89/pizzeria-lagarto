@@ -14,7 +14,11 @@ import {
   IonCol,
 } from '@ionic/angular/standalone';
 // import { ProductosService } from '../../service/productos.service';
-import { PizzasApi, ProductoFire } from '../../models/producto.models';
+import {
+  newProductosApi,
+  PizzasApi,
+  // ProductoFire,
+} from '../../productos/models/producto.models';
 import { Router } from '@angular/router';
 import { PizzaApiService } from 'src/app/shared/services/pizza-api.service';
 
@@ -43,8 +47,8 @@ export default class ListaPizzasPage implements OnInit {
   private _router = inject(Router);
   private _pizzaApiService = inject(PizzaApiService);
 
-  productos2: ProductoFire[] = [];
-  productos: PizzasApi[] = [];
+  // productos2: ProductoFire[] = [];
+  productos: newProductosApi[] = [];
 
   constructor() {}
 
@@ -62,12 +66,11 @@ export default class ListaPizzasPage implements OnInit {
   }
 
   async obtenerPizzas() {
-    try {
-      const response = await this._pizzaApiService.obtenerPizzas();
-      this.productos = response.data;
-    } catch (error) {
-      console.log(error);
-    }
+    const data = await this._pizzaApiService.obtenerPizzas();
+    this.productos = data.map((p) => {
+      return { ...p, precioDescuento: p.familiar - p.familiar * p.descuento };
+    });
+    // console.log(this.productos);
   }
 
   setRouter(id: string) {

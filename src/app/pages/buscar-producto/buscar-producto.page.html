@@ -1,0 +1,41 @@
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <div class="busqueda-box">
+      <ion-searchbar [(ngModel)]="nombreBusqueda"></ion-searchbar>
+      <ion-button (click)="buscar()"> buscar </ion-button>
+    </div>
+  </ion-card>
+
+  <div class="grid-container">
+    @for (producto of productos; track $index) {
+    <ion-card>
+      <div>
+        <img [src]="producto.imagen_url" />
+      </div>
+      <div>
+        <h4>{{producto.nombre}}</h4>
+        @if (producto.familiar) {
+        <h5 style="color: red; text-decoration: line-through">
+          S/ {{producto.familiar.toFixed(2)}}
+        </h5>
+        }
+        <p>
+          {{producto.precio ? producto.precio.toFixed(2) : (producto.familiar -
+          producto.familiar * producto.descuento ).toFixed(2)}}
+        </p>
+      </div>
+      <div>
+        @if (!producto.tiempo_preparacion) {
+        <ion-button color="secondary" (click)="setRouterBebida(producto.id)"
+          >Detalles</ion-button
+        >
+        } @else {
+        <ion-button color="secondary" (click)="setRouter(producto.id)"
+          >Detalles</ion-button
+        >
+        }
+      </div>
+    </ion-card>
+    }
+  </div>
+</ion-content>

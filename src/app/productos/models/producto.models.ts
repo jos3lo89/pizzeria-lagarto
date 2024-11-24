@@ -1,90 +1,90 @@
-export interface Producto {
-  nombre: string;
-  descripcion: string;
-  tamanosPrecios: {
-    pequena: number;
-    mediana: number;
-    grande: number;
-  };
-}
+// export interface Producto {
+//   nombre: string;
+//   descripcion: string;
+//   tamanosPrecios: {
+//     pequena: number;
+//     mediana: number;
+//     grande: number;
+//   };
+// }
 
-export interface ProductoAPi {
-  name: string;
-  description: string;
-  // image: string;
-  isSpicy: boolean;
-  isGlutenFree: boolean;
-  isVegetarian: boolean;
-  size: 'big' | 'medium' | 'family';
-  price: {
-    big: number;
-    medium: number;
-    family: number;
-  };
-}
+// export interface ProductoFire extends Producto {
+//   id: string;
+//   foto: string;
+//   nombreNormalizado: string;
+// }
 
-export interface ProductoFire extends Producto {
-  id: string;
-  foto: string;
-  nombreNormalizado: string;
-}
+// export interface ProductoAPi {
+//   name: string;
+//   description: string;
+//   // image: string;
+//   isSpicy: boolean;
+//   isGlutenFree: boolean;
+//   isVegetarian: boolean;
+//   size: 'big' | 'medium' | 'family';
+//   price: {
+//     big: number;
+//     medium: number;
+//     family: number;
+//   };
+// }
 
-export interface ProductoCarrito {
-  id: string;
-  idUser: string;
-  cantidad: number;
-  nombre: string;
-  precioTotal: number;
-  precioUnitario: number;
-  tamano: string | null;
-  foto: string;
-}
+// export interface ProductoCarrito {
+//   id: string;
+//   idUser: string;
+//   cantidad: number;
+//   nombre: string;
+//   precioTotal: number;
+//   precioUnitario: number;
+//   tamano: string | null;
+//   foto: string;
+// }
 
-export interface ProductoCarritoFire extends ProductoCarrito {
-  docId: string;
-}
+// export interface ProductoCarritoFire extends ProductoCarrito {
+//   docId: string;
+// }
 
-export interface Bebida {
-  nombre: string;
-  precio: number;
-}
+// export interface Bebida {
+//   nombre: string;
+//   precio: number;
+// }
 
-export interface BebidaFirebase extends Bebida {
-  foto: string;
-  id: string;
-}
+// export interface BebidaFirebase extends Bebida {
+//   foto: string;
+//   id: string;
+// }
 
-export interface PriceApi {
-  big: number;
-  medium: number;
-  family: number;
-}
+// export interface PriceApi {
+//   big: number;
+//   medium: number;
+//   family: number;
+// }
 
-export type Productotype = ProductoApiGet[];
+// export type Productotype = ProductoApiGet[];
 
-export interface ProductoApiGet {
-  id: string;
-  description: string;
-  image: string;
-  isGlutenFree: boolean;
-  isSpicy: boolean;
-  isVegetarian: boolean;
-  name: string;
-  size: string;
-  createdAt: string;
-  updatedAt: string;
-  price: Price;
-}
+// export interface ProductoApiGet {
+//   id: string;
+//   description: string;
+//   image: string;
+//   isGlutenFree: boolean;
+//   isSpicy: boolean;
+//   isVegetarian: boolean;
+//   name: string;
+//   size: string;
+//   createdAt: string;
+//   updatedAt: string;
+//   price: Price;
+// }
 
-export interface Price {
-  id: string;
-  big: number;
-  medium: number;
-  family: number;
-  pizzaId: string;
-}
+// export interface Price {
+//   id: string;
+//   big: number;
+//   medium: number;
+//   family: number;
+//   pizzaId: string;
+// }
 
-/// api
+/// api NEST JS
 
 export interface PizzaApiRegister {
   nombre: string;
@@ -153,16 +153,20 @@ export interface ProductoCarriotApi {
   precio_unitario: number;
 }
 
+export interface ProductoListApi {
+  id: string;
+  id_user: string;
+  id_producto: string;
+  nombre: string;
+  imagen_url: string;
+  cantidad: number;
+  precio_total: number;
+  precio_unitario: number;
+  created_at: string;
+  updated_at: string;
+}
 
-export interface  ProductoListApi {
-  id: string
-  id_user: string
-  id_producto: string
-  nombre: string
-  imagen_url: string
-  cantidad: number
-  precio_total: number
-  precio_unitario: number
-  created_at: string
-  updated_at: string
+
+export interface newProductosApi extends PizzasApi {
+  precioDescuento: number;
 }

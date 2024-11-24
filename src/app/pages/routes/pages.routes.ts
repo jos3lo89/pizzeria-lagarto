@@ -9,49 +9,42 @@ export default [
   {
     canActivate: [authGuard()],
     path: 'perfil',
-    loadComponent: () => import('../../usuario/pages/perfil/perfil.page'),
+    loadComponent: () => import('../perfil/perfil.page'),
   },
   {
     path: 'buscar-producto',
-    loadComponent: () =>
-      import('../../productos/pages/buscar-producto/buscar-producto.page'),
+    loadComponent: () => import('../buscar-producto/buscar-producto.page'),
   },
   {
     path: 'lista-pizzas',
-    loadComponent: () =>
-      import('../../productos/pages/lista-pizzas/lista-pizzas.page'),
+    loadComponent: () => import('../lista-pizzas/lista-pizzas.page'),
   },
   {
     path: 'lista-bebidas',
-    loadComponent: () =>
-      import('../../productos/pages/lista-bebidas/lista-bebidas.page'),
+    loadComponent: () => import('../lista-bebidas/lista-bebidas.page'),
   },
   {
     canActivate: [roleGuard()],
     path: 'agregar-pizza',
-    loadComponent: () =>
-      import('../../productos/pages/agregar-pizza/agregar-pizza.page'),
+    loadComponent: () => import('../agregar-pizza/agregar-pizza.page'),
   },
   {
     path: 'detalles',
-    loadComponent: () =>
-      import('../../productos/pages/detalles-producto/detalles-producto.page'),
+    loadComponent: () => import('../detalles-producto/detalles-producto.page'),
   },
   {
     canActivate: [authGuard()],
     path: 'carrito',
-    loadComponent: () => import('../../productos/pages/carrito/carrito.page'),
+    loadComponent: () => import('../carrito/carrito.page'),
   },
   {
     canActivate: [authGuard()],
 
     path: 'agregar-bebida',
-    loadComponent: () =>
-      import('../../productos/pages/agregar-bebida/agregar-bebida.page'),
+    loadComponent: () => import('../agregar-bebida/agregar-bebida.page'),
   },
   {
     path: 'detalles-bebida',
-    loadComponent: () =>
-      import('../../productos/pages/detalles-bebida/detalles-bebida.page'),
+    loadComponent: () => import('../detalles-bebida/detalles-bebida.page'),
   },
 ] as Routes;

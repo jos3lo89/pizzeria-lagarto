@@ -1,9 +1,6 @@
 <ion-content [fullscreen]="true">
-  <ion-card>
-    <div class="busqueda-box">
-      <ion-searchbar [(ngModel)]="nombreBusqueda"></ion-searchbar>
-      <ion-button (click)="buscar()"> buscar </ion-button>
-    </div>
+  <ion-card class="title-box">
+    <ion-title size="large" color="secondary">Lista pizzas</ion-title>
   </ion-card>
 
   <div class="grid-container">
@@ -13,19 +10,16 @@
         <img [src]="pizza.imagen_url" />
       </div>
       <div>
+        <h5 style="color: red; text-decoration: line-through">
+          S/ {{pizza.familiar.toFixed(2)}}
+        </h5>
+        <h6 style="color: aqua">S/ {{pizza.precioDescuento.toFixed(2)}}</h6>
         <h4>{{pizza.nombre}}</h4>
-        <p>{{pizza.precio ? pizza.precio : pizza.familiar}}</p>
       </div>
       <div>
-        @if (pizza.personal) {
-        <ion-button color="secondary" (click)="setRouterBebida(pizza.id)"
-          >Detalles</ion-button
-        >
-        } @else {
         <ion-button color="secondary" (click)="setRouter(pizza.id)"
           >Detalles</ion-button
         >
-        }
       </div>
     </ion-card>
     }

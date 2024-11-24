@@ -33,13 +33,13 @@ import { PizzaApiService } from 'src/app/shared/services/pizza-api.service';
 interface FormAgregarPizza {
   nombre: FormControl<string | null>;
   descripcion: FormControl<string | null>;
-  gluten: FormControl<boolean | null>;
-  picante: FormControl<boolean | null>;
-  vegetariana: FormControl<boolean | null>;
+  categoria: FormControl<'vegetariana' | 'carnes' | null>;
+  tiempo_preparacion: FormControl<number | null>;
+  descuento: FormControl<string | null>;
   tamanosPrecios: FormGroup<{
     familiar: FormControl<number | null>;
     mediana: FormControl<number | null>;
-    grande: FormControl<number | null>;
+    personal: FormControl<number | null>;
   }>;
 }
 
@@ -79,13 +79,12 @@ export default class AgregarPizzaPage implements OnInit {
   CameraSource = CameraSource;
   guardando = false;
 
-  // Aplica la interfaz FormAgregarPizza
   form = this._formBuilder.group<FormAgregarPizza>({
     nombre: this._formBuilder.control('', [Validators.required]),
     descripcion: this._formBuilder.control('', [Validators.required]),
-    gluten: this._formBuilder.control(false, [Validators.required]),
-    picante: this._formBuilder.control(false, [Validators.required]),
-    vegetariana: this._formBuilder.control(false, [Validators.required]),
+    categoria: this._formBuilder.control(null, [Validators.required]),
+    tiempo_preparacion: this._formBuilder.control(0, [Validators.required]),
+    descuento: this._formBuilder.control('0.1', [Validators.required]),
     tamanosPrecios: this._formBuilder.group({
       familiar: this._formBuilder.control<number | null>(
         null,
@@ -95,7 +94,7 @@ export default class AgregarPizzaPage implements OnInit {
         null,
         Validators.required
       ),
-      grande: this._formBuilder.control<number | null>(
+      personal: this._formBuilder.control<number | null>(
         null,
         Validators.required
       ),
@@ -121,24 +120,29 @@ export default class AgregarPizzaPage implements OnInit {
       );
       return;
     }
+
     const {
       nombre,
       descripcion,
       tamanosPrecios,
-      gluten,
-      picante,
-      vegetariana,
+      categoria,
+      descuento,
+      tiempo_preparacion,
     } = this.form.value;
-    if (!nombre || !descripcion || !tamanosPrecios) return;
-    const { grande, mediana, familiar } = tamanosPrecios;
-    if (!grande || !mediana || !familiar) return;
+    if (
+      !nombre ||
+      !descripcion ||
+      !tamanosPrecios ||
+      !categoria ||
+      !descuento ||
+      !tiempo_preparacion
+    )
+      return;
+    const { personal, mediana, familiar } = tamanosPrecios;
+    if (!personal || !mediana || !familiar) return;
 
     if (!this.fotoPizza) {
       this._toast.getToast('Falta la foto de la pizza', 'middle', 'warning');
-      return;
-    }
-
-    if (gluten == null || picante == null || vegetariana == null) {
       return;
     }
 
@@ -166,16 +170,17 @@ export default class AgregarPizzaPage implements OnInit {
 
       await this._pizzaApiService.crearPizza(
         {
-          categoria: 'vegetariana',
-          descripcion,
-          descuento: 10,
-          disponible: true,
-          familiar: grande,
-          mediana: familiar,
-          personal: mediana,
           nombre,
+          categoria,
+          descripcion,
+          descuento: parseFloat(descuento),
+          disponible: true,
           promocion: true,
-          tiempo_preparacion: 23,
+          tiempo_preparacion,
+
+          familiar: familiar,
+          mediana: mediana,
+          personal: personal,
         },
         this.fotoPizza
       );

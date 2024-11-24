@@ -13,7 +13,10 @@ import {
   IonSpinner,
 } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BebidaApiPorId, BebidaFirebase } from '../../models/producto.models';
+import {
+  BebidaApiPorId,
+  // BebidaFirebase,
+} from '../../productos/models/producto.models';
 import { ToastService } from 'src/app/shared/services/toast.service';
 // import { BebidaService } from '../../service/bebida.service';
 // import { CarritoService } from '../../service/carrito.service';
@@ -92,36 +95,24 @@ export default class DetallesBebidaPage implements OnInit {
   }
 
   async ngOnInit() {
+    // await this.obetenerBebidaPorId(this.params.id);
+  }
+
+  async ionViewWillEnter() {
     await this.obetenerBebidaPorId(this.params.id);
   }
 
   async obetenerBebidaPorId(id: string) {
-    try {
-      const res = await this._bebidaApiService.obtenerBebidaPorId(id);
-
-      this.bebida = res.data;
-      console.log(res.data);
-
-      this.precioUnitario = res.data.precio;
-      this.calcularPrecioTotal();
-    } catch (error) {
-      console.log(error);
-    }
+    this.bebida = await this._bebidaApiService.obtenerBebidaPorId(id);
+    this.precioUnitario = this.bebida.precio;
+    this.calcularPrecioTotal();
   }
 
   setRouter(route: string) {
-    // this._router.navigateByUrl('/pages/lista-bebidas');
-
-    // console.log(route);
-
     if (this.backUrl) {
-      console.log('router 1');
       this._router.navigateByUrl(`/pages/${this.backUrl}`);
-      // this._router.
     } else {
-      console.log('router 2');
       this._router.navigateByUrl(route);
-      // this._router.
     }
   }
 
@@ -155,7 +146,6 @@ export default class DetallesBebidaPage implements OnInit {
     try {
       this.agregandoAlCarrito = true;
 
-      console.log('el click llego aqui 1');
 
       // const newProdcutoCart = await this._carritoService.agregarAlCarrito({
       //   idUser: this.idUser,
@@ -178,7 +168,6 @@ export default class DetallesBebidaPage implements OnInit {
         precio_unitario: this.precioUnitario,
       });
 
-      console.log('el click llego aqui 2');
       if (!newProdcutoCart) {
         this._toast.getToast(
           'nuevo producto no agreggadopa',
@@ -186,15 +175,12 @@ export default class DetallesBebidaPage implements OnInit {
           'warning'
         );
         this.agregandoAlCarrito = false;
-        console.log('el click llego aqui 3');
         return;
       }
       this.agregandoAlCarrito = false;
 
       this._toast.getToast('Bebida agregado al carrito', 'middle', 'success');
-      console.log('el click llego aqui 4');
     } catch (error) {
-      console.log('el click llego aqui 5');
       this.agregandoAlCarrito = false;
       this._toast.getToast('Ocurrio un error al carrito', 'middle', 'danger');
       console.log(error);

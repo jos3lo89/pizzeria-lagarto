@@ -21,11 +21,11 @@ export class PdfService {
   constructor() {}
 
   private datosDeEmpresa = {
-    nombre: 'Pizzeria Rabit',
+    nombre: 'Rabit',
     ruc: '235343263SDT2342',
-    direccion: 'Jr. Tadeo Leguía 153',
+    direccion: 'Av las fresias 123',
     email: 'rabit@gmail.com',
-    web: 'www.rabit.com',
+    web: 'www.pizzasrabit.com',
   };
 
   private ticketInfo = {

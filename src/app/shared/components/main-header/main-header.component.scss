@@ -2,17 +2,18 @@ ion-avatar {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 20px;
 }
 
 .img-logo {
-  max-width: 50px;
+  width: auto;
   height: auto;
 }
 
 h4 {
-    color: #CB6040;
+  color: #cb6040;
 }
 
 h4 span {
-    color: #FFF7D1;
+  color: #fff7d1;
 }

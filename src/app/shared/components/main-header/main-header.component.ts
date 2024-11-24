@@ -9,14 +9,15 @@ import {
 } from '@ionic/angular/standalone';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/auth/service/auth.service';
+// import { CartCounterComponent } from '../cart-counter/cart-counter.component';
 // import { CarritoService } from 'src/app/productos/service/carrito.service';
 
 @Component({
   selector: 'app-main-header',
   templateUrl: './main-header.component.html',
   styleUrls: ['./main-header.component.scss'],
-  standalone: true,
   imports: [IonButton, IonText, IonAvatar, IonToolbar],
+  standalone: true,
 })
 export class MainHeaderComponent implements OnInit {
   private _router = inject(Router);

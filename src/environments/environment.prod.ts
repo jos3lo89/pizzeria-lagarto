@@ -8,5 +8,6 @@ export const environment = {
     apiKey: 'AIzaSyDGLePh0Hn-mw5FpWDdwio7DgKwQDn65dk',
     authDomain: 'pizzeria-lagarto.firebaseapp.com',
     messagingSenderId: '685272837365',
-  }
+  },
+  apiUrl: "http://localhost:3000"
 };

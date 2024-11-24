@@ -13,7 +13,7 @@ import {
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/auth/service/auth.service';
 import { User } from '@angular/fire/auth';
-import { ProductoListApi } from '../../models/producto.models';
+import { ProductoListApi } from 'src/app/productos/models/producto.models';
 import { ToastService } from 'src/app/shared/services/toast.service';
 import { PdfService } from 'src/app/shared/services/pdf.service';
 import { CarritoApiService } from 'src/app/shared/services/carrito-api.service';
@@ -106,10 +106,10 @@ export default class CarritoPage implements OnInit {
   }
 
   comprar() {
-    console.log({
-      producto: this.productosCarrito,
-      totalPagar: this.precioTotalFinal,
-    });
+    // console.log({
+    //   producto: this.productosCarrito,
+    //   totalPagar: this.precioTotalFinal,
+    // });
 
     if (!this.productosCarrito || !this.precioTotalFinal) return;
 

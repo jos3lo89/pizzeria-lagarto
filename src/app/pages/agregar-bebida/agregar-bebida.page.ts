@@ -130,7 +130,7 @@ export default class AgregarBebidaPage implements OnInit {
       source,
     });
     this.fotoBebida = image.dataUrl;
-    console.log(this.fotoBebida);
+    // console.log(this.fotoBebida);
 
     this.closeModal();
   }
